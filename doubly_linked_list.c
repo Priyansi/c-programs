@@ -84,29 +84,29 @@ void insert(struct node** head, int val, int pos) {
 }
 
 void delete (struct node** head, int pos) {
-    struct node* ptr;
+    struct node* ptr = *head;
     if (*head == NULL) {
         printf("Empty");
+    } else if (pos == 0) {
+        if (ptr->next != NULL) {
+            *head = ptr->next;
+            (*head)->prev = NULL;
+            free(ptr);
+        } else {
+            *head = ptr->next;
+            (*head)->prev = NULL;
+            free(ptr);
+        }
     } else {
-        ptr = *head;
         int i = 0;
         while (i < pos && ptr->next != NULL) {
             ptr = ptr->next;
             ++i;
         }
-        if (ptr == NULL) {
-            printf("Node not found");
-        } else if (*head == ptr && pos == 0) {
-            ptr = *head;
-            *head = ptr->next;
-            (*head)->prev = NULL;
-            free(ptr);
-        } else if (ptr == *head) {
-            *head = ptr->next;
-            (*head)->prev = NULL;
-            free(ptr);
+        if (i < pos) {
+            printf("Node not found\n");
         } else if (ptr->next == NULL) {
-            ptr->prev->next = ptr->next;
+            ptr->prev->next = NULL;
             free(ptr);
         } else {
             ptr->prev->next = ptr->next;
@@ -122,8 +122,8 @@ int main(int argc, char* argv[]) {
 
     create(&head, 5);
     display(head);
-    reverse(&head);
+    delete (&head, 8);
     display(head);
-    // printing value
+
     return 0;
 }
