@@ -19,6 +19,10 @@ int main(int argc, char* argv[]) {
     for (pos = 0; pos < arr_len; ++pos) {
         printf("%d ", arr[pos]);
     }
+
+    for (pos = 0; pos < arr_len; ++pos) {
+        printf("%d ", arr[pos]);
+    }
     printf("\n");
     return 0;
 }

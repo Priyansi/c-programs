@@ -2,13 +2,21 @@
 #include <stdlib.h>
 
 int main() {
-    int arr[2][3][4] = {{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}},
-                        {{13, 14, 15, 16}, {17, 18, 19, 20}, {21, 22, 23, 24}}};
-    printf("%p\n", arr);
-    printf("%p\n", *arr);
-    printf("%p\n", *(arr + 1));
-    printf("%p\n", *(arr + 1) + 2);
-    printf("%p %p\n", arr[0][2], *(*arr + 2));
-    printf("%d\n", *(arr[1][2]));
-    return 0;
+    const int arr[] = {1, 21, 3, 41, 15, 6, 17, 8};
+    int *p, *q;
+
+    p = &arr[0];
+    q = p + 1;
+
+    printf("p: %ld\nq: %ld\n", p, q);
+    printf("%d\n", arr - q);
 }
+
+/*int main(int argc, char* argv[]) {
+    int* a[2];
+    a[0] = (int*)calloc(3, sizeof(int));
+    a[1] = (int*)calloc(3, sizeof(int));
+    int*(*b)[2] = &a[0];
+    printf("%d", b[1][1]);
+    return 0;
+}*/

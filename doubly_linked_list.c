@@ -3,56 +3,24 @@
 
 struct node {
     int data;
+    struct node* prev;
     struct node* next;
 };
-
-int list_len(struct node* head) {
-    struct node* curr;
-    int len = 0;
-    for (curr = head; curr != NULL; curr = curr->next) {
-        ++len;
-    }
-    return len;
-}
-
-void delete_list(struct node** head) {
-    struct node* curr;
-    while (*head != NULL) {
-        curr = *head;
-        *head = (*head)->next;
-        free(curr);
-    }
-}
 
 void reverse(struct node** head) {
     struct node* prv;
     struct node* ptr;
-    struct node* temp;
     if (*head == NULL) {
         return;
     }
-    for (ptr = *head; ptr->next != NULL; ptr = ptr->next)
-        ;
-    while (ptr != prv) {
-        temp = prv->next;
-        prv->next = ptr->next;
-        ptr->next = temp;
-        prv = prv->next;
+    for (prv = *head, ptr = prv->next;; prv = ptr, ptr = prv->next) {
+        prv->next = prv->prev;
+        prv->prev = ptr;
+        if (ptr == NULL) {
+            break;
+        }
     }
     *head = prv;
-}
-
-void reverse_alter(struct node** head) {
-    struct node* curr = *head;
-    struct node* nxt;
-    struct node* prv = NULL;
-    int len = list_len(*head);
-    while (curr != NULL && len > 0) {
-        nxt = curr->next;
-        curr->next = prv;
-        prv = curr;
-        curr = nxt;
-    }
 }
 
 void create(struct node** head, int len) {
@@ -64,28 +32,16 @@ void create(struct node** head, int len) {
     for (i = 0; i < len; ++i) {
         curr = (struct node*)malloc(sizeof(struct node));
         curr->data = random() % 20;
-        curr->next = NULL;
+        curr->prev = curr->next = NULL;
         if (*head == NULL) {
             *head = curr;
             ptr = curr;
         } else {
+            curr->prev = ptr;
             ptr->next = curr;
             ptr = curr;
         }
     }
-}
-
-void display_rev(struct node* head) {
-    struct node* curr;
-    struct node* last;
-    int len = list_len(head);
-    while (len--) {
-        for (curr = head; curr->next != last; curr = curr->next)
-            ;
-        printf("%d ", curr->data);
-        last = curr;
-    }
-    printf("\n");
 }
 
 void display(struct node* head) {
@@ -101,11 +57,12 @@ void insert(struct node** head, int val, int pos) {
     struct node* ptr;
     curr = (struct node*)malloc(sizeof(struct node));
     curr->data = val;
-    curr->next = NULL;
+    curr->prev = curr->next = NULL;
     if (*head == NULL) {
         *head = curr;
     } else if (pos == 0) {
         curr->next = *head;
+        (*head)->prev = curr;
         *head = curr;
     } else {
         ptr = *head;
@@ -114,31 +71,46 @@ void insert(struct node** head, int val, int pos) {
             ptr = ptr->next;
             ++i;
         }
-        curr->next = ptr->next;
-        ptr->next = curr;
+        if (ptr->next == NULL) {
+            curr->prev = ptr;
+            ptr->next = curr;
+        } else {
+            curr->prev = ptr;
+            curr->next = ptr->next;
+            ptr->next = curr;
+            curr->next->prev = ptr;
+        }
     }
 }
 
 void delete (struct node** head, int pos) {
     struct node* ptr;
-    struct node* prev;
     if (*head == NULL) {
         printf("Empty");
     } else {
         ptr = *head;
         int i = 0;
         while (i < pos && ptr->next != NULL) {
-            prev = ptr;
             ptr = ptr->next;
             ++i;
         }
         if (ptr == NULL) {
             printf("Node not found");
+        } else if (*head == ptr && pos == 0) {
+            ptr = *head;
+            *head = ptr->next;
+            (*head)->prev = NULL;
+            free(ptr);
         } else if (ptr == *head) {
             *head = ptr->next;
+            (*head)->prev = NULL;
+            free(ptr);
+        } else if (ptr->next == NULL) {
+            ptr->prev->next = ptr->next;
             free(ptr);
         } else {
-            prev->next = ptr->next;
+            ptr->prev->next = ptr->next;
+            ptr->next->prev = ptr->prev;
             free(ptr);
         }
     }
@@ -147,10 +119,11 @@ void delete (struct node** head, int pos) {
 int main(int argc, char* argv[]) {
     int len = atoi(argv[1]);
     struct node* head = NULL;
-    create(&head, len);
+
+    create(&head, 5);
     display(head);
-    display_rev(head);
-    delete_list(&head);
+    reverse(&head);
+    display(head);
     // printing value
     return 0;
 }
