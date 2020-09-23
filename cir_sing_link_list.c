@@ -130,16 +130,28 @@ void delete (struct node** head, int pos) {
     }
 }
 
+void reverse(struct node** head) {
+    struct node* ptr1 = *head;
+    struct node* ptr2;
+    while (ptr1->next != ptr1) {
+        ptr2 = ptr1->next;
+        ptr1->next = ptr2->next;
+        ptr2->next = *head;
+        *head = ptr2;
+    }
+    ptr1->next = ptr2;
+}
+
 int main(int argc, char* argv[]) {
     int len = atoi(argv[1]);
     struct node* head = NULL;
     create(&head, len);
     display(head);
-    insert(&head, 30, 7);
+    /*insert(&head, 30, 7);
     display(head);
     //search(head, 30);
-    delete (&head, 0);
+    delete (&head, 0);*/
+    reverse(&head);
     display(head);
-    // printing value
     return 0;
 }

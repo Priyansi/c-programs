@@ -25,21 +25,14 @@ void delete_list(struct node** head) {
 }
 
 void reverse(struct node** head) {
-    struct node* prv;
-    struct node* ptr;
-    struct node* temp;
-    if (*head == NULL) {
-        return;
+    struct node* ptr1 = *head;
+    struct node* ptr2;
+    while (ptr1->next != NULL) {
+        ptr2 = ptr1->next;
+        ptr1->next = ptr2->next;
+        ptr2->next = *head;
+        *head = ptr2;
     }
-    for (ptr = *head; ptr->next != NULL; ptr = ptr->next)
-        ;
-    while (ptr != prv) {
-        temp = prv->next;
-        prv->next = ptr->next;
-        ptr->next = temp;
-        prv = prv->next;
-    }
-    *head = prv;
 }
 
 void reverse_alter(struct node** head) {
@@ -149,8 +142,9 @@ int main(int argc, char* argv[]) {
     struct node* head = NULL;
     create(&head, len);
     display(head);
-    display_rev(head);
-    delete_list(&head);
+    reverse(&head);
+    display(head);
+    //delete_list(&head);
     // printing value
     return 0;
 }

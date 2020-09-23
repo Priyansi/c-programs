@@ -32,9 +32,25 @@ int pop(STACK* s, struct node** del) {
     return 0;
 }
 
+void insert_bottom(STACK* s, int val) {
+    if (s->top == NULL) {
+        push(s, val);
+        return;
+    }
+    struct node* del;
+    pop(s, &del);
+    insert_bottom(s, val);
+    push(s, del->data);
+}
+
 void reverse(STACK* s) {
     if (s->top == NULL) {
+        return;
     }
+    struct node* del;
+    pop(s, &del);
+    reverse(s);
+    insert_bottom(s, del->data);
 }
 
 void disp_iter(STACK* s) {
@@ -50,6 +66,7 @@ void disp_iter(STACK* s) {
         pop(&temp, &del);
         push(s, del->data);
     }
+    printf("\n");
 }
 
 void disp_recr(STACK* s) {
@@ -108,10 +125,12 @@ int main(int argc, char* argv[]) {
     push(&s, 10);
     push(&s, 20);
     push(&s, 30);
-    STACK copy_s;
+    disp_iter(&s);
+    reverse(&s);
+    /*STACK copy_s;
     copy_s.top = NULL;
     copy_iter(&s, &copy_s);
-    disp_iter(&copy_s);
+    disp_iter(&copy_s);*/
     disp_iter(&s);
     return 0;
 }
