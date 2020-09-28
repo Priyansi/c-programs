@@ -2,34 +2,50 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int arr[] = {4, 4, 4, 4, 3, 3, 3, 6, 6, 6, 6, 6, 6, 2, 2, 2, 2, 5, 5, 5, 5, 5};
+int arr_len = 22;
+void insert(int num, int pos) {
+    int i;
+    if (arr_len == 0) {
+        for (i = 0; i < num; ++i) {
+            arr[i] = num;
+            ++arr_len;
+        }
+    } else if (pos < arr_len) {
+        int curr_num = arr[pos];
+        int curr_pos;
+        int can_insert = 1;
+        for (i = pos; i <= pos + num; ++i) {
+            if (arr[i] != num) {
+                can_insert = 0;
+                curr_pos = i;
+                break;
+            }
+        }
+        if (can_insert) {
+            for (i = arr_len - 1; i >= pos; ++i) {
+                arr[i + num] = arr[i];
+            }
+            arr_len += num;
+            for (i = 0; i < num; ++i) {
+                arr[i + pos] = num;
+            }
+        } else {
+            for (i = arr_len - 1; i >= curr_pos; ++i) {
+                arr[i + num] = arr[i];
+            }
+            arr_len += num;
+            for (i = 0; i < num; ++i) {
+                arr[curr_pos + i] = num;
+            }
+        }
+    }
+}
+
 int main(int argc, char* argv[]) {
-    int arr_len = atoi(argv[1]);
-    int pos;
-    int* arr = (int*)malloc(arr_len * sizeof(int));
-
-    for (pos = 0; pos < arr_len; ++pos) {
-        arr[pos] = random() % 50;
+    insert(5, 0);
+    for (int i = 0; i < arr_len; ++i) {
+        printf("%d ", arr[i]);
     }
-    for (pos = 0; pos < arr_len; ++pos) {
-        printf("%d ", arr[pos]);
-    }
-    printf("\n");
-    int i, num, pos_insert;
-    scanf("%d", &num);         // number of elements to insert
-    scanf("%d", &pos_insert);  // position to insert, not index, index = pos-1
-    arr_len += num;
-    arr = (int*)realloc(arr, arr_len * sizeof(int));
-    // shifting elements back
-    for (pos = pos_insert - 1; pos < arr_len; ++pos) {
-        arr[pos + num] = arr[pos];
-    }
-    // insertu=ing new elements
-    for (pos = pos_insert - 1; pos < pos_insert + num - 1; ++pos) {
-        scanf("%d", &arr[pos]);
-    }
-    for (pos = 0; pos < arr_len; ++pos) {
-        printf("%d ", arr[pos]);
-    }
-
     return 0;
 }
