@@ -138,17 +138,19 @@ void display(QUEUE* q) {
     printf("\n");
 }
 
-void display_nqueues(NQUEUES* nq) {
-    if (nq->head == NULL) {
+void display_nqueues(NQUEUES nq) {
+    if (nq.head == NULL) {
         return;
     }
     int i = 0;
-    QUEUE* curr = nq->head;
-    for (curr, i; curr != NULL; curr = curr->next, ++i) {
+    for (nq.head, i; nq.head != NULL; nq.head = nq.head->next, ++i) {
         if (i & 1) {
-            reverse(curr);
+            reverse(nq.head);
+            display(nq.head);
+            reverse(nq.head);
+        } else {
+            display(nq.head);
         }
-        display(curr);
     }
 }
 
@@ -161,9 +163,9 @@ int main(int argc, char* argv[]) {
     insert_nqueues(&nq, 4);
     insert_nqueues(&nq, 5);
     insert_nqueues(&nq, 6);
-    display_nqueues(&nq);
+    display_nqueues(nq);
     delete_nqueues(&nq);
     delete_nqueues(&nq);
-    display_nqueues(&nq);
+    display_nqueues(nq);
     return 0;
 }
