@@ -1,3 +1,3 @@
 # C Programs
 
-These are some popular C programs that I did in part with my course.
+Data Structures and Algorithms inC as part of my coursework.

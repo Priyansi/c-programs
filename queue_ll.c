@@ -46,14 +46,14 @@ int main(int argc, char* argv[]) {
     q.front = q.rear = NULL;
     int val = random() % 10;
     if (insert(&q, val) != 0) {
-        printf("QUEUE Overflow\n");
+        printf("Queue Overflow\n");
     } else {
         printf("%d inserted successfully\n", val);
     }
 
     struct node* del;
     if (delete (&q, &del) != 0) {
-        printf("QUEUE Underflow\n");
+        printf("Queue Underflow\n");
     } else {
         printf("%d deleted successfully\n", del->data);
     }

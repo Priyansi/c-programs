@@ -42,8 +42,8 @@ int delete_shift(QUEUE* q, int* del) {
     if (q->front == q->rear) {
         q->front = q->rear = -1;
     } else {
-        for (int i = q->rear; i >= q->front; --i) {
-            q->data[i + 1] = q->data[i];
+        for (int i = q->front; i < q->rear; ++i) {
+            q->data[i] = q->data[i + 1];
         }
     }
     return 0;
