@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -11,7 +13,7 @@ typedef struct {
     struct node* rear;
 } QUEUE;
 
-int insert(QUEUE* q, int val) {
+int enqueue(QUEUE* q, int val) {
     struct node* curr;
     curr = (struct node*)malloc(sizeof(struct node));
     if (curr == NULL) {
@@ -28,7 +30,7 @@ int insert(QUEUE* q, int val) {
     return 0;
 }
 
-int delete (QUEUE* q, struct node** del) {
+int dequeue(QUEUE* q, struct node** del) {
     if (q->front == NULL) {
         return 1;
     }
@@ -37,25 +39,6 @@ int delete (QUEUE* q, struct node** del) {
         q->front = q->rear = NULL;
     } else {
         q->front = q->front->next;
-    }
-    return 0;
-}
-
-int main(int argc, char* argv[]) {
-    QUEUE q;
-    q.front = q.rear = NULL;
-    int val = random() % 10;
-    if (insert(&q, val) != 0) {
-        printf("Queue Overflow\n");
-    } else {
-        printf("%d inserted successfully\n", val);
-    }
-
-    struct node* del;
-    if (delete (&q, &del) != 0) {
-        printf("Queue Underflow\n");
-    } else {
-        printf("%d deleted successfully\n", del->data);
     }
     return 0;
 }
