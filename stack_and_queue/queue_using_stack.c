@@ -6,7 +6,6 @@
 // max capacity of queue is 5 since it is made up of two stacks (one for insertion s[0] and one for deletion s[1]) of capacity 5 each
 typedef struct {
     STACK s[2];
-    int curr_s;
 } QUEUE;
 
 int is_stack_empty(STACK s) {
@@ -39,7 +38,6 @@ int dequeue(QUEUE* q, int* del) {
 int main(int argc, char* argv[]) {
     QUEUE q;
     q.s[0].top = q.s[1].top = -1;
-    q.curr_s = 0;
     int del;
     enqueue(&q, 1);
     enqueue(&q, 2);
