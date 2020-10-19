@@ -1,171 +1,49 @@
 /*
-Make n queues like this
----------->
-<----------
----------->
+Prtition an array to make n double circluar queues
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX 2
+#define MAX 3
 
-typedef struct node {
-    int data[MAX];
+typedef struct {
     int front;
     int rear;
-    struct node* next;
-    struct node* prev;
-} QUEUE;
+} DCQUEUE;
 
-typedef struct {
-    QUEUE* head;
-} NQUEUES;
+int adjusted_ind(int q_ind) {
+    return MAX * q_ind;
+}
 
-typedef struct {
-    int data[MAX];
-    int top;
-} STACK;
-
-int push(STACK* s, int val) {
-    if (s->top == MAX - 1) {
+int enqueue(int* data, DCQUEUE* ndcq, int q_ind, int val, char end) {
+    printf("%d %d\n", ndcq[0].front, ndcq[0].rear);
+    if (ndcq[q_ind].front - adjusted_ind(q_ind) == (ndcq[q_ind].rear + 1) % MAX) {
+        printf("DCQUEUE Overflow\n");
         return 1;
     }
-    s->top++;
-    s->data[s->top] = val;
-    return 0;
-}
-
-int pop(STACK* s, int* del) {
-    if (s->top == -1) {
-        return 1;
-    }
-    *del = s->data[s->top];
-    s->top--;
-    return 0;
-}
-
-int insert(QUEUE* q, int val) {
-    if (q->rear == MAX - 1) {
-        return 1;
-    }
-    if (q->front == -1) {
-        q->front = q->rear = 0;
+    if (ndcq[q_ind].rear = -1) {
+        ndcq[q_ind].front = ndcq[q_ind].rear = adjusted_ind(q_ind);
+        ndcq[q_ind].rear = val;
+    } else if (end == 'f') {
+        ndcq[q_ind].front = (ndcq[q_ind].front + MAX - 1) % MAX + adjusted_ind(q_ind);
+        ndcq[q_ind].front = val;
     } else {
-        ++q->rear;
+        ndcq[q_ind].rear = (ndcq[q_ind].rear + 1) % MAX + adjusted_ind(q_ind);
+        ndcq[q_ind].rear = val;
     }
-    q->data[q->rear] = val;
+    printf("%d %d\n", ndcq[0].front, ndcq[0].rear);
     return 0;
-}
-
-int delete (QUEUE* q, int* del) {
-    if (q->front == -1) {
-        return 1;
-    }
-    *del = q->data[q->front];
-    if (q->front == q->rear) {
-        q->front = q->rear = -1;
-    } else {
-        for (int i = q->front; i < q->rear; ++i) {
-            q->data[i] = q->data[i + 1];
-        }
-        --q->rear;
-    }
-    return 0;
-}
-
-void reverse(QUEUE* q) {
-    STACK s;
-    s.top = -1;
-    int del;
-    while (q->front != -1) {
-        delete (q, &del);
-        push(&s, del);
-    }
-    while (s.top != -1) {
-        pop(&s, &del);
-        insert(q, del);
-    }
-}
-
-void insert_nqueues(NQUEUES* nq, int val) {
-    if (nq->head == NULL) {
-        QUEUE* q = (QUEUE*)malloc(sizeof(QUEUE));
-        q->front = q->rear = -1;
-        q->next = q->prev = NULL;
-        nq->head = q;
-        insert(q, val);
-    } else {
-        QUEUE* curr = nq->head;
-        for (curr; curr->next != NULL; curr = curr->next)
-            ;
-        if (insert(curr, val) != 0) {
-            QUEUE* q = (QUEUE*)malloc(sizeof(QUEUE));
-            q->front = q->rear = -1;
-            q->next = NULL;
-            q->prev = curr;
-            curr->next = q;
-            insert(q, val);
-        }
-    }
-}
-
-void delete_nqueues(NQUEUES* nq) {
-    if (nq->head == NULL) {
-        return;
-    } else {
-        int del;
-        delete (nq->head, &del);
-        QUEUE* curr = nq->head->next;
-        for (curr; curr != NULL; curr = curr->next) {
-            delete (curr, &del);
-            insert(curr->prev, del);
-            if (curr->front == -1) {
-                curr->prev->next = NULL;
-                free(curr);
-            }
-        }
-    }
-}
-
-void display(QUEUE* q) {
-    if (q->front == -1) {
-        return;
-    }
-    for (int i = q->front; i <= q->rear; ++i) {
-        printf("%d ", q->data[i]);
-    }
-    printf("\n");
-}
-
-void display_nqueues(NQUEUES nq) {
-    if (nq.head == NULL) {
-        return;
-    }
-    int i = 0;
-    for (nq.head, i; nq.head != NULL; nq.head = nq.head->next, ++i) {
-        if (i & 1) {
-            reverse(nq.head);
-            display(nq.head);
-            reverse(nq.head);
-        } else {
-            display(nq.head);
-        }
-    }
 }
 
 int main(int argc, char* argv[]) {
-    NQUEUES nq;
-    nq.head = NULL;
-    insert_nqueues(&nq, 1);
-    insert_nqueues(&nq, 2);
-    insert_nqueues(&nq, 3);
-    insert_nqueues(&nq, 4);
-    insert_nqueues(&nq, 5);
-    insert_nqueues(&nq, 6);
-    display_nqueues(nq);
-    delete_nqueues(&nq);
-    delete_nqueues(&nq);
-    display_nqueues(nq);
+    int n = atoi(argv[1]);
+    int* data = (int*)malloc(n * MAX * sizeof(int));
+    DCQUEUE* ndcq = (DCQUEUE*)malloc(n * sizeof(DCQUEUE));
+    for (int i = 0; i < n; ++i) {
+        ndcq[i].front = ndcq[i].rear = -1;
+    }
+    enqueue(data, ndcq, 0, 1, 'r');
+    //enqueue(data, ndcq, 0, 2, 'r');
     return 0;
 }

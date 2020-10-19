@@ -5,6 +5,7 @@ struct node {
     struct node* left;
     int data;
     struct node* right;
+    int rt;
 };
 
 struct node_stack {
@@ -48,19 +49,12 @@ int is_empty(STACK s) {
 struct node* create(int val) {
     struct node* curr = (struct node*)malloc(sizeof(struct node));
     curr->data = val;
+    curr->rt = 0;
     curr->left = curr->right = NULL;
     return curr;
 }
 
-void preorder_traverse_recr(struct node* root) {
-    if (root != NULL) {
-        printf("%d ", root->data);
-        preorder_traverse_recr(root->left);
-        preorder_traverse_recr(root->right);
-    }
-}
-
-void preorder_traverse_iter(struct node* root) {
+void traverse(struct node* root) {
     STACK s;
     s.top = NULL;
     struct node* del;
@@ -77,43 +71,6 @@ void preorder_traverse_iter(struct node* root) {
     }
 }
 
-void inorder_traverse_recr(struct node* root) {
-    if (root != NULL) {
-        inorder_traverse_recr(root->left);
-        printf("%d ", root->data);
-        inorder_traverse_recr(root->right);
-    }
-}
-
-void inorder_traverse_iter(struct node* root) {
-    STACK s;
-    s.top = NULL;
-    struct node* curr_node = root;
-    struct node* del;
-    // start with the leftmost element
-    while (curr_node != NULL) {
-        push(&s, curr_node);
-        curr_node = curr_node->left;
-    }
-    while (!is_empty(s)) {
-        pop(&s, &del);  // pop the leftmost node
-        printf("%d ", del->data);
-        curr_node = del->right;      // if right doesn't exist, repeat loop to pop parent
-        while (curr_node != NULL) {  // if right exists, it becomes the curr (root node) and again goes on left
-            push(&s, curr_node);
-            curr_node = curr_node->left;
-        }
-    }
-}
-
-void postorder_traverse_recr(struct node* root) {
-    if (root != NULL) {
-        postorder_traverse_recr(root->left);
-        postorder_traverse_recr(root->right);
-        printf("%d ", root->data);
-    }
-}
-
 int main(int argc, char* argv[]) {
     struct node* root = NULL;
     root = create(1);
@@ -125,9 +82,7 @@ int main(int argc, char* argv[]) {
     root->right->left = create(8);
     root->right->right = create(9);
     root->right->right->left = create(10);
-    inorder_traverse_recr(root);
-    printf("\n");
-    inorder_traverse_iter(root);
+    traverse(root);
     printf("\n");
 
     return 0;
