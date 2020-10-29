@@ -254,11 +254,11 @@ struct node* delete_node_iter(struct node* root, int val) {
             }
         }
         if (curr->left == NULL && curr->right == NULL) {
-            child = NULL;
+            child = NULL;  // no children
         } else if (curr->left != NULL) {
-            child = curr->left;
+            child = curr->left;  // one child
         } else {
-            child = curr->right;
+            child = curr->right;  // one child
         }
 
         if (parent->data >= val) {
