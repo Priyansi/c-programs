@@ -163,28 +163,51 @@ struct node* get_min(struct node* root) {
     return NULL;
 }
 
-struct node* insert_node(struct node* root, int val) {
+struct node* insert_node_recr(struct node* root, int val) {
     if (root == NULL) {
         root = create_node(val);
     } else if (root->data > val) {
-        root->left = insert_node(root->left, val);
+        root->left = insert_node_recr(root->left, val);
     } else {
-        root->right = insert_node(root->right, val);
+        root->right = insert_node_recr(root->right, val);
     }
     return root;
 }
 
-struct node* delete_node(struct node* root, int val) {
+struct node* insert_node_iter(struct node* root, int val) {
+    struct node* curr = root;
+    struct node* parent;
+    if (root == NULL) {
+        root = create_node(val);
+    } else {
+        while (curr != NULL) {
+            parent = curr;
+            if (curr->data > val) {
+                curr = curr->left;
+            } else {
+                curr = curr->right;
+            }
+        }
+        if (parent->data > val) {
+            parent->left = create_node(val);
+        } else {
+            parent->right = create_node(val);
+        }
+    }
+    return root;
+}
+
+struct node* delete_node_recr(struct node* root, int val) {
     if (root != NULL) {
         if (root->data > val) {
-            root->left = delete_node(root->left, val);
+            root->left = delete_node_recr(root->left, val);
         } else if (root->data < val) {
-            root->right = delete_node(root->right, val);
+            root->right = delete_node_recr(root->right, val);
         } else {
             if (root->left != NULL && root->right != NULL) {
                 struct node* left_tree_max = get_max(root->left);
                 root->data = left_tree_max->data;
-                root->left = delete_node(root->left, root->data);
+                root->left = delete_node_recr(root->left, root->data);
             } else if (root->left == NULL && root->right == NULL) {
                 free(root);
                 root = NULL;
@@ -203,22 +226,68 @@ struct node* delete_node(struct node* root, int val) {
     return root;
 }
 
+struct node* delete_node_iter(struct node* root, int val) {
+    if (root != NULL) {
+        struct node* curr = root;
+        struct node *parent, *child;
+        while (curr->data != val) {
+            parent = curr;
+            if (curr->data > val) {
+                curr = curr->left;
+            } else if (curr->data < val) {
+                curr = curr->right;
+            }
+        }
+        if (curr->left != NULL && curr->right != NULL) {
+            child = get_max(curr->left);  // replace with max from left subtree
+            curr->data = child->data;
+            val = child->data;  // child is to be deletec so val changed
+            parent = curr;      // if parent == val then we delete
+            curr = curr->left;
+            while (curr->data != val) {
+                parent = curr;
+                if (curr->data > val) {
+                    curr = curr->left;
+                } else if (curr->data < val) {
+                    curr = curr->right;
+                }
+            }
+        }
+        if (curr->left == NULL && curr->right == NULL) {
+            child = NULL;
+        } else if (curr->left != NULL) {
+            child = curr->left;
+        } else {
+            child = curr->right;
+        }
+
+        if (parent->data >= val) {
+            parent->left = child;
+        } else {
+            parent->right = child;
+        }
+        free(curr);
+    }
+    return root;
+}
+
 int main(int argc, char* argv[]) {
     struct node* root = NULL;
-    root = insert_node(root, 4);
-    root = insert_node(root, 6);
-    root = insert_node(root, 2);
-    root = insert_node(root, 1);
-    root = insert_node(root, 3);
-    root = insert_node(root, 5);
-
-    root = delete_node(root, 2);  // two children
+    root = insert_node_iter(root, 4);
+    root = insert_node_iter(root, 6);
+    root = insert_node_iter(root, 2);
+    root = insert_node_iter(root, 1);
+    root = insert_node_iter(root, 3);
+    root = insert_node_iter(root, 5);
     inorder_traverse(root);
 
-    root = delete_node(root, 6);  // one child
+    root = delete_node_iter(root, 2);  // two children
     inorder_traverse(root);
 
-    root = delete_node(root, 5);  // no child
+    root = delete_node_iter(root, 6);  // one child
+    inorder_traverse(root);
+
+    root = delete_node_iter(root, 5);  // no child
     inorder_traverse(root);
     return 0;
 }
