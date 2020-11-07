@@ -32,7 +32,7 @@ int binary_search_recr(int* arr, int lower_ind, int upper_ind, int val) {
 
 int main(int argc, char* argv[]) {
     int arr[] = {3, 9, 10, 16, 20, 25, 27, 32, 34, 37};
-    printf("%d\n", binary_search_recr(arr, 0, sizeof(arr) - 1, 27));
-    printf("%d\n", binary_search_iter(arr, 0, sizeof(arr) - 1, 33));
+    printf("%d\n", binary_search_recr(arr, 0, (sizeof(arr) / sizeof(arr[0])) - 1, 27));
+    printf("%d\n", binary_search_iter(arr, 0, (sizeof(arr) / sizeof(arr[0])) - 1, 33));
     return 0;
 }
