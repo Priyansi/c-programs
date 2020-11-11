@@ -32,46 +32,40 @@ int pop(STACK* s, struct node** del) {
     return 0;
 }
 
-int is_empty(STACK s) {
-    if (s.top == NULL) {
-        return 1;
-    }
-    return 0;
-}
-
-void disp(STACK s) {
-    if (s.top == NULL) {
+void disp(STACK* s) {
+    if (s->top == NULL) {
         printf("NULL");
         return;
     }
 
     struct node* del;
-    pop(&s, &del);
+    pop(s, &del);
     printf("%d->", del->data);
     disp(s);
+    push(s, del->data);
 }
 
-void sort_stack(STACK* s) {
+void sort_insert(STACK* s, int val) {
     STACK temp;
-    struct node *del1, *del2;
+    struct node* del;
     temp.top = NULL;
-    while (!is_empty(*s)) {
-        pop(s, &del1);
-        if (!is_empty(temp)) {
-            pop(&temp, &del2);
-            while (!is_empty(temp) && del2->data > del1->data) {
-                push(s, del2->data);
-                pop(&temp, &del2);
-            }
-            push(&temp, del1->data);
-            push(&temp, del2->data);
+    while (1) {
+        if (s->top == NULL) {
+            push(s, val);
+            break;
+        }
+        pop(s, &del);
+        if (del->data > val) {
+            push(s, del->data);
+            push(s, val);
+            break;
         } else {
-            push(&temp, del1->data);
+            push(&temp, del->data);
         }
     }
-    while (!is_empty(temp)) {
-        pop(&temp, &del1);
-        push(s, del1->data);
+    while (temp.top != NULL) {
+        pop(&temp, &del);
+        push(s, del->data);
     }
 }
 
@@ -79,13 +73,12 @@ int main(int argc, char* argv[]) {
     STACK s;
     s.top = NULL;
     struct node* del;
-    push(&s, 5);
-    push(&s, 7);
-    // push(&s, 3);
-    // push(&s, 1);
-    // push(&s, 8);
-    // push(&s, 6);
-    sort_stack(&s);
-    disp(s);
+    sort_insert(&s, 5);
+    sort_insert(&s, 7);
+    sort_insert(&s, 3);
+    sort_insert(&s, 1);
+    sort_insert(&s, 8);
+    sort_insert(&s, 6);
+    disp(&s);
     return 0;
 }
