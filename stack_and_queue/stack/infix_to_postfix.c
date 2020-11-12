@@ -101,7 +101,7 @@ void infix_to_postfix(char* infix, char* postfix) {
 int main(int argc, char* argv[]) {
     char infix[100], postfix[100];
     scanf("%[^\n]%*c", infix);
-    infix_to_postfix(&infix, &postfix);
-    printf("%s", postfix);
+    infix_to_postfix(infix, postfix);
+    printf("Postfix : %s\n", postfix);
     return 0;
 }

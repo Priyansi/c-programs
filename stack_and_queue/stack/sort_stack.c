@@ -41,7 +41,7 @@ int is_empty(STACK s) {
 
 void disp(STACK s) {
     if (s.top == NULL) {
-        printf("NULL");
+        printf("NULL\n");
         return;
     }
 
@@ -63,8 +63,14 @@ void sort_stack(STACK* s) {
                 push(s, del2->data);
                 pop(&temp, &del2);
             }
-            push(&temp, del1->data);
-            push(&temp, del2->data);
+            if (del2->data < del1->data) {
+                push(&temp, del2->data);
+                push(&temp, del1->data);
+            } else {
+                push(&temp, del1->data);
+                push(&temp, del2->data);
+            }
+
         } else {
             push(&temp, del1->data);
         }
@@ -81,11 +87,13 @@ int main(int argc, char* argv[]) {
     struct node* del;
     push(&s, 5);
     push(&s, 7);
-    // push(&s, 3);
-    // push(&s, 1);
-    // push(&s, 8);
-    // push(&s, 6);
+    push(&s, 3);
+    push(&s, 1);
+    push(&s, 8);
+    push(&s, 6);
+    disp(s);
     sort_stack(&s);
+    printf("After Sorting -\n");
     disp(s);
     return 0;
 }

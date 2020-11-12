@@ -136,7 +136,7 @@ void infix_to_prefix(char* infix, char* prefix) {
 int main(int argc, char* argv[]) {
     char infix[100], prefix[100];
     scanf("%[^\n]%*c", infix);
-    infix_to_prefix(&infix, &prefix);
-    printf("%s", prefix);
+    infix_to_prefix(infix, prefix);
+    printf("Prefix : %s\n", prefix);
     return 0;
 }
