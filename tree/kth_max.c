@@ -25,13 +25,22 @@ struct node* insert_node(struct node* root, int val) {
     return root;
 }
 
-int height(struct node* root) {
-    if (root == NULL) {
-        return -1;
+void traverse(struct node* root, int k, int* count) {
+    if (root == NULL || *count >= k) {
+        return;
     }
-    int height_left = height(root->left);
-    int height_right = height(root->right);
-    return 1 + ((height_left > height_right) ? height_left : height_right);
+    traverse(root->right, k, count);
+    ++(*count);
+    if (k == *count) {
+        printf("Kth Max : %d\n", root->data);
+        return;
+    }
+    traverse(root->left, k, count);
+}
+
+void kth_max(struct node* root, int k) {
+    int count = 0;
+    traverse(root, k, &count);
 }
 
 int main(int argc, char* argv[]) {
@@ -42,6 +51,6 @@ int main(int argc, char* argv[]) {
     root = insert_node(root, 1);
     root = insert_node(root, 3);
     root = insert_node(root, 5);
-    printf("Height : %d\n", height(root));
+    kth_max(root, 3);
     return 0;
 }

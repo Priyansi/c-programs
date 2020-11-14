@@ -9,7 +9,7 @@ int fib(int num) {
     if (num == 1) {
         return 1;
     }
-    return  fib(num - 2) + fib(num - 1));
+    return fib(num - 2) + fib(num - 1);
 }
 
 int main(int argc, char* argv[]) {
