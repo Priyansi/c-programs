@@ -17,7 +17,7 @@ void selection_sort(int* arr, int length) {
 }
 
 int main(int argc, char* argv[]) {
-    int arr[] = {3, 5, 8, 9, 4};
+    int arr[] = {3, 2, 1, 5, 4};
     for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); ++i) {
         printf("%d ", arr[i]);
     }
@@ -26,5 +26,6 @@ int main(int argc, char* argv[]) {
     for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); ++i) {
         printf("%d ", arr[i]);
     }
+    printf("\n");
     return 0;
 }
