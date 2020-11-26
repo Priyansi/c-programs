@@ -97,6 +97,13 @@ int main(int argc, char* argv[]) {
     root = insert_node(root, 1);
     root = insert_node(root, 3);
     root = insert_node(root, 5);
+    /*    
+          4
+        /   \
+      2       6
+     / \     /
+    1   3   5
+    */
     level_order_traverse(root);
     return 0;
 }
