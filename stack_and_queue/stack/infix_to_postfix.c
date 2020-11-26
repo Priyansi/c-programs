@@ -57,7 +57,7 @@ int is_low_to_high_priority(char op1, char op2) {
     return 0;
 }
 
-void infix_to_postfix(char* infix, char* postfix) {
+void toPostfix(char* infix, char* postfix) {
     int i, j;
     i = j = 0;
     STACK s;
@@ -101,7 +101,7 @@ void infix_to_postfix(char* infix, char* postfix) {
 int main(int argc, char* argv[]) {
     char infix[100], postfix[100];
     scanf("%[^\n]%*c", infix);
-    infix_to_postfix(infix, postfix);
+    toPostfix(infix, postfix);
     printf("Postfix : %s\n", postfix);
     return 0;
 }

@@ -42,6 +42,14 @@ int main(int argc, char* argv[]) {
     root = insert_node(root, 1);
     root = insert_node(root, 3);
     root = insert_node(root, 5);
+    /*    
+          4
+        /   \
+      2       6
+     / \     /
+    1   3   5
+    */
+
     printf("Height : %d\n", height(root));
     return 0;
 }

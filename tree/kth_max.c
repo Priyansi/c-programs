@@ -32,7 +32,7 @@ void traverse(struct node* root, int k, int* count) {
     traverse(root->right, k, count);
     ++(*count);
     if (k == *count) {
-        printf("Kth Max : %d\n", root->data);
+        printf("%dth Maximum Element : %d\n", k, root->data);
         return;
     }
     traverse(root->left, k, count);
@@ -44,6 +44,7 @@ void kth_max(struct node* root, int k) {
 }
 
 int main(int argc, char* argv[]) {
+    int k = atoi(argv[1]);
     struct node* root = NULL;
     root = insert_node(root, 4);
     root = insert_node(root, 6);
@@ -51,6 +52,14 @@ int main(int argc, char* argv[]) {
     root = insert_node(root, 1);
     root = insert_node(root, 3);
     root = insert_node(root, 5);
-    kth_max(root, 3);
+    /*    
+          4
+        /   \
+      2       6
+     / \     /
+    1   3   5
+    */
+
+    kth_max(root, k);
     return 0;
 }
