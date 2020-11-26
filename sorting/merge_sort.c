@@ -25,6 +25,7 @@ void merge(int* arr, int lower_ind, int mid_ind, int upper_ind) {
     for (int i = 0; i < (upper_ind - lower_ind + 1); ++i) {
         arr[lower_ind + i] = temp[i];
     }
+    free(temp);
 }
 
 void merge_sort(int* arr, int lower_ind, int upper_ind) {
