@@ -13,7 +13,7 @@ void max_heapify_node(int* arr, int parent_ind, int size) {
         int temp = arr[parent_ind];
         arr[parent_ind] = arr[max];
         arr[max] = temp;
-        max_heapify_node(arr, parent_ind, size);
+        max_heapify_node(arr, max, size);
     }
 }
 
@@ -24,7 +24,7 @@ void max_heapify(int* arr, int size) {
 }
 
 void heap_sort(int* arr, int size) {
-    int temp;
+    int temp, b = size;
     // max heapify the entire array first
     max_heapify(arr, size);
     while (size > 0) {
@@ -38,7 +38,7 @@ void heap_sort(int* arr, int size) {
 }
 
 int main(int argc, char* argv[]) {
-    int arr[] = {3, 5, 8, 9, 4};
+    int arr[] = {9, 3, 5, 10, 8, 2, 12, 7};
     for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); ++i) {
         printf("%d ", arr[i]);
     }
